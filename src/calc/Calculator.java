@@ -1,5 +1,7 @@
 package calc;
 
+import servlet.Constants;
+
 public class Calculator {
 
 	private String action;
@@ -13,19 +15,11 @@ public class Calculator {
 	}
 
 	public String run() throws Exception {
-//		resetB();
 		if (canCalculate()) {
 			calculate(action);
 		}
 		return getDisplayResult();
 	}
-
-	// Reset B when action is the same as previous action
-//	private void resetB() {
-//		if (action.equals(previousAction)) {
-//			b = null;
-//		}
-//	}
 
 	private boolean canCalculate() {
 		boolean calc = false;
@@ -40,25 +34,31 @@ public class Calculator {
 
 	private void calculate(String action) throws Exception {
 		switch (action) {
-		case "+":
+		case Constants.PLUS:
 			c = a + b;
 			setDisplayResult(Double.toString(c));
-			previousAction = "+";
+			previousAction = Constants.PLUS;
 			a = c;
 			break;
-		case "-":
-//			c = a - b;
-//			setDisplayResult(Double.toString(c));
-//			previousAction = "-";
-//			a = c;
+		case Constants.MINUS:
+			c = a - b;
+			setDisplayResult(Double.toString(c));
+			previousAction = Constants.MINUS;
+			a = c;
 			break;
-		case "*":
-//			c = a * b;
-//			setDisplayResult(Double.toString(c));
-//			previousAction = "*";
-//			a = c;
+		case Constants.TIMES:
+			c = a * b;
+			setDisplayResult(Double.toString(c));
+			previousAction = Constants.TIMES;
+			a = c;
 			break;
-		case "=":
+		case Constants.DIVIDE:
+			c = a / b;
+			setDisplayResult(Double.toString(c));
+			previousAction = Constants.DIVIDE;
+			a = c;
+			break;
+		case Constants.EQUAL:
 			calculate(previousAction); // escape action is previousAction
 			break;
 		default:

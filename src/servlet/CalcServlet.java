@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import calc.Calculator;
+import controller.CalcController;
 
 /**
  * Servlet implementation class CalcServlet
@@ -17,7 +17,8 @@ import calc.Calculator;
 @WebServlet("/CalcServlet")
 public class CalcServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private Calculator calc = new Calculator();
+	CalcController cc = new CalcController();
+	
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -37,17 +38,10 @@ public class CalcServlet extends HttpServlet {
 			String action = request.getParameter("action");
 			String num = request.getParameter("display");
 
-			calc.setAction(action);
-			if (action.equals("C")) {
-				calc.reset();
-			} else {
-				setCalcValues(num);
-
-				String displayResult = calc.run();
-
-				request.setAttribute(Constants.DISPLAY_RESULT, displayResult);
-				request.setAttribute(Constants.CLEAR, Constants.CLEAR);
-			}
+			String displayResult = cc.calculate(action, num);
+			
+			request.setAttribute(Constants.DISPLAY_RESULT, displayResult);
+			request.setAttribute(Constants.CLEAR, Constants.CLEAR);
 
 			rd.forward(request, response);
 
@@ -56,19 +50,5 @@ public class CalcServlet extends HttpServlet {
 		}
 	}
 
-	private void setCalcValues(String num) {
-		if(calc.getAction().equals(calc.getPreviousAction())) {
-			calc.setB(null);
-		}
-
-		if (num.isEmpty() || num.equals(calc.getC().toString())) {
-			return;
-		}
-		if (calc.getA() == null) {
-			calc.setA(Double.parseDouble(num));
-		} else {
-			calc.setB(Double.parseDouble(num)); // technically b=c
-		}
-		
-	}
+	
 }
